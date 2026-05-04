@@ -63,6 +63,7 @@ document.getElementById("clearBtn").addEventListener("click", clearAll);
 const settingsMenu = document.getElementById("settingsMenu");
 const backupDataPage = document.getElementById("backupDataPage");
 const versionPage = document.getElementById("versionPage");
+const privacyPanel = document.getElementById("privacyPanel");
 
 document
   .getElementById("openBackupData")
@@ -72,6 +73,9 @@ document
 
 document.getElementById("openVersion").addEventListener("click", function () {
   showSettingsPage(versionPage);
+});
+document.getElementById("privacyBtn").addEventListener("click", function () {
+  privacyPanel.hidden = !privacyPanel.hidden;
 });
 
 document.querySelectorAll("[data-settings-back]").forEach((button) => {
@@ -347,7 +351,7 @@ function render() {
   const currentYear = String(new Date().getFullYear());
   const yearTrips = trips.filter((trip) => trip.date.startsWith(currentYear));
   const yearTotal = yearTrips.reduce((sum, trip) => sum + Number(trip.d), 0);
-  document.getElementById("yearTitle").textContent = currentYear;
+
   document.getElementById("yearTripsLog").textContent = yearTrips.length;
   document.getElementById("yearKmLog").textContent = formatNumber(yearTotal);
 
@@ -590,11 +594,27 @@ function exportCSV() {
   ];
   const csv = rows.map((row) => row.map(csvEscape).join(",")).join("\n");
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "LamaRide_backup.csv";
-  link.click();
-  URL.revokeObjectURL(link.href);
+  const file = new File([blob], "LamaRide_backup.csv", {
+    type: "text/csv",
+  });
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    navigator
+      .share({
+        title: "LamaRide backup",
+        text: "Backup af dine LamaRide data",
+        files: [file],
+      })
+      .catch(() => {
+        alert("Backup blev ikke gemt. Prøv igen og vælg fx 'Gem i Filer'.");
+      });
+  } else {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "LamaRide_backup.csv";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
 }
 
 function importCSV() {
