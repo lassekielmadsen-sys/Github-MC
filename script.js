@@ -592,7 +592,7 @@ function exportCSV() {
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "mc-data.csv";
+  link.download = "LamaRide_backup.csv";
   link.click();
   URL.revokeObjectURL(link.href);
 }
