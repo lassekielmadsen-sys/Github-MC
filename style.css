@@ -60,3 +60,10 @@ label{display:block;font-weight:800;margin-bottom:4px}
 .cardTitleRow h3{margin:0}
 .undoSmallBtn{width:auto!important;margin-top:0!important;padding:8px 12px!important;border-radius:999px!important;background:var(--dangerSoft)!important;color:var(--danger)!important;box-shadow:none!important;font-size:.85rem;white-space:nowrap}
 .fileInput{background:#fff;border:1px dashed var(--line)}
+input[type="date"]{
+  width:100%;
+  display:block;
+  min-width:0;
+  appearance:none;
+  -webkit-appearance:none;
+}
