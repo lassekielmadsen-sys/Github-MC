@@ -130,7 +130,10 @@
 
       <div class="section" id="tab2">
         <div class="card">
-          <h3>Ny optankning</h3>
+          <div class="cardTitleRow">
+  <h3>Ny Tankning</h3>
+  
+</div>
           <input type="date" id="fuelDate" />
           <input type="number" id="fuelOdo" placeholder="Km-stand" />
           <input type="number" id="fuelLiters" placeholder="Liter tanket" />
@@ -140,20 +143,32 @@
         </div>
 
         <div class="card">
-          <div class="statsRow">
-            <div class="statBoxLight">
-              <div class="smallLabel">Gns. km/l</div>
-              <div class="stat" id="avgKml">0</div>
-            </div>
-            <div class="statBoxLight">
-              <div class="smallLabel">Kr/km</div>
-              <div class="stat" id="costPerKm">0</div>
-            </div>
-          </div>
-        </div>
+  <div class="statsRow">
+    <div class="statBoxLight">
+      <div class="smallLabel">Gns. km/l</div>
+      <div class="stat" id="avgKml">0</div>
+    </div>
+
+    <div class="statBoxLight">
+      <div class="smallLabel">Kr/km</div>
+      <div class="stat" id="costPerKm">0</div>
+    </div>
+
+    <div class="statBoxLight">
+      <div class="smallLabel">Brændstof i alt</div>
+      <div class="stat" id="totalFuelCost">0 kr</div>
+    </div>
+  </div>
+</div>
 
         <div class="card">
-          <h3>Tankninger</h3>
+          
+          <div class="cardTitleRow">
+  <h3>Tankninger</h3>
+  <button id="undoFuelBtn" class="undoSmallBtn" type="button">
+    Fortryd
+  </button>
+</div>
           <div class="tripRow tripHead">
             <div>#</div>
             <div>Liter</div>

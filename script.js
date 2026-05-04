@@ -51,6 +51,7 @@ document.getElementById("openSettings").addEventListener("click", function () {
 });
 document.getElementById("saveTripBtn").addEventListener("click", addTrip);
 document.getElementById("undoTripBtn").addEventListener("click", undoLastTrip);
+document.getElementById("undoFuelBtn").addEventListener("click", undoLastFuel);
 document.getElementById("yearSelect").addEventListener("change", render);
 document.getElementById("saveFuelBtn").addEventListener("click", addFuelLog);
 document
@@ -204,7 +205,34 @@ function undoLastTrip() {
   render();
   showMessage(saveMessage, "Tur #" + newestNumber + " er slettet.", false);
 }
+function undoLastFuel() {
+  if (fuelLogs.length === 0) {
+    alert("Ingen tankninger at fortryde");
+    return;
+  }
 
+  const newestFuel = fuelLogs
+    .slice()
+    .sort((a, b) => Number(b.odo) - Number(a.odo))[0];
+
+  const newestNumber = fuelLogs.length;
+
+  if (
+    !confirm(
+      "Er du sikker på, at du vil slette tankning #" + newestNumber + "?",
+    )
+  )
+    return;
+
+  fuelLogs = fuelLogs.filter(
+    (item) => String(item.id) !== String(newestFuel.id),
+  );
+
+  saveFuelLogs();
+  render();
+
+  showMessage(fuelMessage, "Tankning #" + newestNumber + " er slettet.", false);
+}
 function addTrip() {
   const date = dateInput.value;
   const odo = Number(odoInput.value.replace(",", "."));
@@ -379,19 +407,37 @@ function render() {
 }
 
 function renderFuelLogs() {
+  const currentYear = String(new Date().getFullYear());
+  const fuelThisYear = fuelLogs.filter((item) =>
+    item.date.startsWith(currentYear),
+  );
+
+  const totalFuelCost = fuelThisYear.reduce(
+    (sum, item) => sum + Number(item.p),
+    0,
+  );
+
   let km = 0,
     l = 0,
     c = 0;
+
   for (let i = 1; i < fuelLogs.length; i++) {
     km += Number(fuelLogs[i].odo) - Number(fuelLogs[i - 1].odo);
     l += Number(fuelLogs[i].l);
     c += Number(fuelLogs[i].p);
   }
+
   document.getElementById("avgKml").textContent = l ? (km / l).toFixed(1) : "0";
+
   document.getElementById("costPerKm").textContent = km
     ? (c / km).toFixed(2)
     : "0";
+
+  document.getElementById("totalFuelCost").textContent =
+    formatNumber(totalFuelCost) + " kr";
+
   const reversed = fuelLogs.slice().reverse();
+
   document.getElementById("fuelList").innerHTML = reversed.length
     ? reversed
         .map((item, index) => {
