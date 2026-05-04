@@ -302,26 +302,63 @@ function exportCSV(){
 function importCSV(){
  const file=document.getElementById('importFile').files[0]
  if(!file){alert('Vælg en CSV fil');return}
+
  const reader=new FileReader()
  reader.onload=function(event){
   const text=String(event.target.result||'')
-  const lines=text.split(String.fromCharCode(10)).map(line=>line.trim()).filter(Boolean)
-  const imported=[]
+  const lines=text.split(/\r?\n/).map(line=>line.trim()).filter(Boolean)
+
+  const importedTrips=[]
+  const importedFuel=[]
+  const importedService=[]
+
   lines.slice(1).forEach(line=>{
    const columns=parseCsvLine(line)
-   const date=(columns[0]||'').trim()
-   const odo=Number((columns[1]||'').trim())
-   const note=(columns[3]||'').trim()
-   if(date&&!Number.isNaN(odo))imported.push({id:createId(),date,odo,d:0,note})
+
+   const type=(columns[0]||'').trim()
+   const date=(columns[1]||'').trim()
+   const odo=Number((columns[2]||'').trim())
+   const note=(columns[4]||'').trim()
+   const liters=Number((columns[5]||'').trim())
+   const price=Number((columns[6]||'').trim())
+   const serviceType=(columns[7]||'').trim()
+
+   if(type==='log' && date && !Number.isNaN(odo)){
+    importedTrips.push({id:createId(),date,odo,d:0,note})
+   }
+
+   if(type==='brændstof' && date && !Number.isNaN(odo) && !Number.isNaN(liters) && !Number.isNaN(price)){
+    importedFuel.push({id:createId(),date,odo,l:liters,p:price})
+   }
+
+   if(type==='service' && date && !Number.isNaN(odo)){
+    importedService.push({id:createId(),date,odo,type:serviceType||'Diverse',note})
+   }
   })
-  if(imported.length===0){alert('Der blev ikke fundet nogen gyldige ture i CSV-filen');return}
-  trips=imported
-  recalculateDistances()
+
+  if(importedTrips.length===0 && importedFuel.length===0 && importedService.length===0){
+   alert('Der blev ikke fundet gyldige data i CSV-filen')
+   return
+  }
+
+  trips=importedTrips
+  fuelLogs=importedFuel
+  serviceLogs=importedService
+
+  normalizeTrips()
+  normalizeFuelLogs()
+  normalizeServiceLogs()
+
   saveTrips()
+  saveFuelLogs()
+  saveServiceLogs()
+
   updateYearOptions()
   render()
+
   alert('Data importeret')
  }
+
  reader.readAsText(file)
 }
 
