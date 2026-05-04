@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MC Ture V2</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<header class="appHeader">
+<div>
+<h1>MC Ture V2</h1>
+<p class="subtitle">Log ture, brændstof, service og statistik.</p>
+</div>
+<button id="openSettings" class="settingsBtn" type="button">⚙️</button>
+</header>
+
+
+<div class="tabs">
+<button class="tab active" type="button" data-tab="0">Log</button>
+<button class="tab" type="button" data-tab="1">Statistik</button>
+<button class="tab" type="button" data-tab="2">Brændstof</button>
+<button class="tab" type="button" data-tab="3">Service</button>
+</div>
+
+
+<div class="section active" id="tab0">
+<div class="card cardHero">
+<h3 id="yearTitle">2026</h3>
+<div class="statsRow">
+<div class="statBox">
+<div class="smallLabel">Ture i år</div>
+<div class="stat" id="yearTripsLog">0</div>
+</div>
+<div class="statBox">
+<div class="smallLabel">Km i år</div>
+<div class="stat" id="yearKmLog">0</div>
+</div>
+</div>
+</div>
+
+
+<div class="card">
+<h3>Ny tur</h3>
+<input type="date" id="date">
+<input type="number" id="odo" placeholder="Km-tællerstand">
+<textarea id="note" placeholder="Note"></textarea>
+<button id="saveTripBtn" type="button">Gem tur</button>
+<div id="saveMessage" class="message"></div>
+</div>
+
+
+<div class="card">
+<div class="cardTitleRow">
+<h3>Loggede ture</h3>
+<button id="undoTripBtn" class="undoSmallBtn" type="button">Fortryd</button>
+</div>
+<div class="tripRow tripHead"><div>#</div><div>Distance</div><div>Dato</div><div>Km</div></div>
+<div id="logTripList"></div>
+</div>
+</div>
+
+
+<div class="section" id="tab1">
+<div class="card">
+<label for="yearSelect">Vælg år</label>
+<select id="yearSelect"></select>
+</div>
+
+
+<div class="card">
+<div class="statsRow">
+<div class="statBoxLight">
+<div class="smallLabel">Km i valgte periode</div>
+<div class="stat" id="totalKm">0</div>
+</div>
+<div class="statBoxLight">
+<div class="smallLabel">Ture</div>
+<div class="stat" id="totalTrips">0</div>
+</div>
+</div>
+</div>
+
+
+<div class="card">
+<h3>Graf pr. måned</h3>
+<div id="monthChart" class="chart"></div>
+</div>
+
+
+<div class="card">
+<h3>Månedsoversigt</h3>
+<div id="monthOverview" class="monthList"></div>
+</div>
+
+
+<div class="card">
+<h3>Ture i perioden</h3>
+<div class="tripRow tripHead"><div>#</div><div>Distance</div><div>Dato</div><div>Km</div></div>
+<div id="list"></div>
+</div>
+</div>
+
+
+<div class="section" id="tab2">
+<div class="card">
+<h3>Ny optankning</h3>
+<input type="date" id="fuelDate">
+<input type="number" id="fuelOdo" placeholder="Km-stand">
+<input type="number" id="fuelLiters" placeholder="Liter tanket">
+<input type="number" id="fuelPrice" placeholder="Pris total">
+<button id="saveFuelBtn" type="button">Gem optankning</button>
+<div id="fuelMessage" class="message"></div>
+</div>
+
+
+<div class="card">
+<div class="statsRow">
+<div class="statBoxLight">
+<div class="smallLabel">Gns. km/l</div>
+<div class="stat" id="avgKml">0</div>
+</div>
+<div class="statBoxLight">
+<div class="smallLabel">Kr/km</div>
+<div class="stat" id="costPerKm">0</div>
+</div>
+</div>
+</div>
+
+
+<div class="card">
+<h3>Tankninger</h3>
+<div class="tripRow tripHead"><div>#</div><div>Liter</div><div>Pris</div><div>Km</div></div>
+<div id="fuelList"></div>
+</div>
+</div>
+
+
+<div class="section" id="tab3">
+<div class="card">
+<h3>Ny service</h3>
+<input type="date" id="serviceDate">
+<input type="number" id="serviceOdo" placeholder="Km-stand">
+<select id="serviceType">
+<option value="Olieskift">Olieskift</option>
+<option value="Dækskift">Dækskift</option>
+<option value="Dæktryk">Dæktryk</option>
+<option value="Kæde">Kæde</option>
+<option value="Bremser">Bremser</option>
+<option value="Vask/pleje">Vask/pleje</option>
+<option value="Diverse">Diverse</option>
+</select>
+<textarea id="serviceNote" placeholder="Hvad er lavet? Fx olie + filter, nyt bagdæk, kontrolleret dæktryk..."></textarea>
+<button id="saveServiceBtn" type="button">Gem service</button>
+<div id="serviceMessage" class="message"></div>
+</div>
+
+
+<div class="card">
+<h3>Service log</h3>
+<div class="tripRow tripHead"><div>#</div><div>Type</div><div>Dato</div><div>Km</div></div>
+<div id="serviceList"></div>
+</div>
+</div>
+
+
+<div class="section" id="tab4">
+<div class="card actions">
+<h3>Backup og data</h3>
+<button id="exportBtn" type="button">Eksportér CSV</button>
+<input class="fileInput" type="file" id="importFile" accept=".csv">
+<button id="importBtn" type="button">Importér CSV</button>
+<button id="clearBtn" type="button">Slet alt</button>
+</div>
+</div>
+</main>
+
+
+<script src="script.js"></script>
+</body>
+</html>
