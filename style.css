@@ -364,3 +364,15 @@ input[type="date"] {
   color: var(--text);
   border: 1px solid var(--line);
 }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brandLogo {
+  width: 46px;
+  height: 46px;
+  object-fit: cover;
+  border-radius: 14px;
+}
